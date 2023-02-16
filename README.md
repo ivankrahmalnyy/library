@@ -58,7 +58,3 @@ python ./manage.py runserver
 
     Запуск телеграм бота:
 
-Команда для запуска телеграм бота
-
-
-python ./manage.py runbot
