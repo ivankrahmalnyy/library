@@ -32,9 +32,9 @@ class Book(models.Model):
     # дата создания
     # дата редактирования
     name = models.CharField(verbose_name='Название', max_length=255)
-    description = models.CharField(verbose_name='Описание', max_length=255)
+    description = models.TextField(verbose_name='Описание', max_length=255)
     number_of_page = models.PositiveIntegerField(verbose_name='количество страниц')
-    autor = models.ManyToManyField(Autor,  blank=True, verbose_name='автор')
+    autor = models.ManyToManyField(Autor,  blank=False, verbose_name='автор')
     quantity = models.PositiveIntegerField(verbose_name='количество')
     created_at = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='дата редактирования', auto_now=True)
