@@ -1,7 +1,5 @@
-from django.shortcuts import render
-from django.views import View
 from rest_framework import viewsets
-from rest_framework.generics import ListAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from lib.models import Autor, Book, Reader
 from lib.serializers.autor_serializers import AutorSerializer
@@ -9,29 +7,44 @@ from lib.serializers.book_serializers import BookSerializer
 from lib.serializers.reader_serializers import ReaderSerializer
 
 
-class AutorListView(ListAPIView):
+class AutorViewSet(ModelViewSet):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
 
 
-class BookListView(ListAPIView):
+class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
-class ReaderListView(ListAPIView):
+class ReaderViewSet(ModelViewSet):
     queryset = Reader.objects.all()
     serializer_class = ReaderSerializer
-# def autor(request):
-#     if request.method == "GET":
-#     pass
+
+
+
+
+# from django.shortcuts import render
+# from django.views import View
+# from rest_framework import viewsets
+# from rest_framework.generics import ListAPIView
+#
+# from lib.models import Autor, Book, Reader
+# from lib.serializers.autor_serializers import AutorSerializer
+# from lib.serializers.book_serializers import BookSerializer
+# from lib.serializers.reader_serializers import ReaderSerializer
 #
 #
-# def book(request):
-#     if request.method == "GET":
-#     pass
+# class AutorListView(ListAPIView):
+#     queryset = Autor.objects.all()
+#     serializer_class = AutorSerializer
 #
 #
-# def reader(request):
-#     if request.method == "GET":
-#         pass
+# class BookListView(ListAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializer
+#
+#
+# class ReaderListView(ListAPIView):
+#     queryset = Reader.objects.all()
+#     serializer_class = ReaderSerializer
