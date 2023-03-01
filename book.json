@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "quantity": 2,
+        "name": "Книга1",
+        "description": "asdasd",
+        "number_of_page": 12,
+        "created_at": "2023-02-27T18:50:25.969242Z",
+        "updated_at": "2023-02-27T18:50:25.969242Z",
+        "autor": [
+            1
+        ]
+    },
+    {
+        "id": 2,
+        "quantity": 1,
+        "name": "Книга2",
+        "description": "sadasd",
+        "number_of_page": 2323,
+        "created_at": "2023-02-27T18:57:54.143304Z",
+        "updated_at": "2023-02-27T18:57:54.143304Z",
+        "autor": [
+            2
+        ]
+    }
+]

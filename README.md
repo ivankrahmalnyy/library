@@ -54,7 +54,5 @@ python ./manage.py migrate
     Запуск проекта
 
 
-python ./manage.py runserver
-
-    Запуск телеграм бота:
+Добавлены json файлы для примера
 
