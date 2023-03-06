@@ -18,6 +18,10 @@ class Autor(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+    @property
+    def fullname(self):
+        return f'{self.first_name} {self.last_name}'
+
     class Meta:
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
@@ -34,7 +38,7 @@ class Book(models.Model):
     name = models.CharField(verbose_name='Название', max_length=255)
     description = models.TextField(verbose_name='Описание', max_length=255)
     number_of_page = models.PositiveIntegerField(verbose_name='количество страниц')
-    autor = models.ManyToManyField(Autor,  blank=False, verbose_name='автор')
+    autor = models.ForeignKey(Autor,  blank=False, on_delete=models.CASCADE, verbose_name='автор')
     quantity = models.PositiveIntegerField(verbose_name='количество')
     created_at = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='дата редактирования', auto_now=True)
@@ -65,6 +69,11 @@ class Reader(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    def display_active_book(self):
+        return ', '.join([active_book.name for active_book in self.active_book.all()])
+
+    display_active_book.short_description = 'Активные книги'
 
     class Meta:
         verbose_name = 'Читатель'

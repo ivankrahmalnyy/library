@@ -2,9 +2,7 @@ from rest_framework import viewsets
 from rest_framework.viewsets import ModelViewSet
 
 from lib.models import Autor, Book, Reader
-from lib.serializers.autor_serializers import AutorSerializer
-from lib.serializers.book_serializers import BookSerializer
-from lib.serializers.reader_serializers import ReaderSerializer
+from lib.serializers import AutorSerializer, BookSerializer, ReaderSerializer
 
 
 class AutorViewSet(ModelViewSet):
