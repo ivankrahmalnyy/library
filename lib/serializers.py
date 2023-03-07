@@ -19,7 +19,7 @@ class BookValidator:
 
 class BookSerializer(serializers.ModelSerializer):
     number_of_page = serializers.IntegerField(validators=[BookValidator()])
-    autor = serializers.SlugRelatedField(queryset=Autor.objects.all(), slug_field='fullname')
+    autor = serializers.SlugRelatedField(queryset=Autor.objects.all(), slug_field='last_name')
 
     # name = serializers.CharField(allow_blank=True)
 
