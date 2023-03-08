@@ -62,5 +62,3 @@ class ReaderSerializer(serializers.ModelSerializer):
         model = Reader
         fields = '__all__'
 
-    def create(self, validated_data):
-        pass
