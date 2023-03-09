@@ -39,9 +39,15 @@ class ReaderAdmin(admin.ModelAdmin):
         stat_ = queryset.update(status=False)
         self.message_user(request, f'Закрыто {stat_} читателей')
 
-    # @admin.action(description="Удалить книги")
-    # def delete_book(self, request, queryset: QuerySet):
-    #     queryset.update(active_book=None)
+    @admin.action(description='Удалить книги из актива читателя')
+    def delete_book(self, request, queryset):
+
+        for reader in queryset.all():
+            for book in reader.active_book.all():
+                book = Book.objects.get(pk=book.pk)
+                book.quantity += 1
+                book.save()
+                reader.active_book.remove(book)
 
 
 admin.site.register(Book, BookAdmin)
