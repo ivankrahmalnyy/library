@@ -41,21 +41,35 @@ class ReaderSerializer(serializers.ModelSerializer):
     number = serializers.IntegerField(validators=[PhoneValidator()])
     active_book = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
 
+    # def create(self, validated_data):
+    #     reader = super().create(validated_data)
+    # 
+    #     reader.set_password(reader.password)
+    #     reader.save()
+    #     return reader
+
+
+    def validate(self, attrs):
+        if len(attrs['active_book']) > 3:
+            raise serializers.ValidationError('Can\'t add more than 3 books')
+        return attrs
+
+
     def update(self, instance, validated_data):
-        if validated_data['book']:
+        if validated_data['active_book']:
             # Уменьшаем количество экземпляров книги, если книга добавляется в актив читателя
-            for book in validated_data['book']:
-                if book not in instance.book.all():
-                    if book.quantity > 0:
-                        book.quantity -= 1
-                        book.save()
+            for active_book in validated_data['active_book']:
+                if active_book not in instance.active_book.all():
+                    if active_book.quantity > 0:
+                        active_book.quantity -= 1
+                        active_book.save()
                     else:
-                        raise ValidationError(f'The book {book.name} is missing')
+                        raise ValidationError(f'The book {active_book.name} is missing')
             # Увеличиваем количество экземпляров книги, если книга удаляется из актива читателя
-            for book in instance.book.all():
-                if book not in validated_data['book']:
-                    book.quantity += 1
-                    book.save()
+            for active_book in instance.active_book.all():
+                if active_book not in validated_data['active_book']:
+                    active_book.quantity += 1
+                    active_book.save()
 
         return super().update(instance, validated_data)
     class Meta:
