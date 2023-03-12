@@ -38,15 +38,15 @@ class PhoneValidator:
 
 
 class ReaderSerializer(serializers.ModelSerializer):
-    number = serializers.IntegerField(validators=[PhoneValidator()])
+    phone = serializers.IntegerField(validators=[PhoneValidator()])
     active_book = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
 
-    # def create(self, validated_data):
-    #     reader = super().create(validated_data)
-    # 
-    #     reader.set_password(reader.password)
-    #     reader.save()
-    #     return reader
+    def create(self, validated_data):
+        reader = super().create(validated_data)
+
+        reader.set_password(reader.password)
+        reader.save()
+        return reader
 
 
     def validate(self, attrs):

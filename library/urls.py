@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from rest_framework import viewsets
-
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from lib import views
 from lib.views import BookViewSet, AutorViewSet, ReaderViewSet
 router = routers.SimpleRouter()
@@ -28,14 +28,10 @@ router.register(r'reader', views.ReaderViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("login/", TokenObtainPairView.as_view()),
+    path("refresh/", TokenRefreshView.as_view())
+
 
 ]
 urlpatterns += router.urls
-# from lib.views import ReaderListView, AutorListView, BookListView
-#
-# urlpatterns = [
-#     path("admin/", admin.site.urls),
-#     path("book/", BookListView.as_view()),
-#     path("autor/", AutorListView.as_view()),
-#     path("reader/", ReaderListView.as_view())
-# ]
+

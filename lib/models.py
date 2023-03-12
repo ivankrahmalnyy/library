@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
@@ -51,20 +52,12 @@ class Book(models.Model):
         verbose_name_plural = 'Книги'
 
 
-class Reader(models.Model):
-    # - имя
-    # - фамилия
-    # номер телефона
-    # статус читателя по умолчанию активный
-    # активные книги
-    # - дата создания
-    # - дата редактирования
+class Reader(AbstractUser):
     first_name = models.CharField(verbose_name='Имя', max_length=255)
     last_name = models.CharField(verbose_name='Фамилия', max_length=255)
-    number = models.BigIntegerField(verbose_name='номер телефона', unique=True)
+    phone = models.BigIntegerField(verbose_name='номер телефона') #unique=True
     status = models.BooleanField(default=True)
     active_book = models.ManyToManyField(Book, blank=True, verbose_name='активные книги')
-    created = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='дата редактирования', auto_now_add=True)
 
     def __str__(self):
@@ -78,4 +71,31 @@ class Reader(models.Model):
     class Meta:
         verbose_name = 'Читатель'
         verbose_name_plural = 'Читатели'
-
+# class Reader(models.Model):
+#     # - имя
+#     # - фамилия
+#     # номер телефона
+#     # статус читателя по умолчанию активный
+#     # активные книги
+#     # - дата создания
+#     # - дата редактирования
+#     first_name = models.CharField(verbose_name='Имя', max_length=255)
+#     last_name = models.CharField(verbose_name='Фамилия', max_length=255)
+#     number = models.BigIntegerField(verbose_name='номер телефона', unique=True)
+#     status = models.BooleanField(default=True)
+#     active_book = models.ManyToManyField(Book, blank=True, verbose_name='активные книги')
+#     created = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
+#     updated = models.DateTimeField(verbose_name='дата редактирования', auto_now_add=True)
+#
+#     def __str__(self):
+#         return f'{self.first_name} {self.last_name}'
+#
+#     def display_active_book(self):
+#         return ', '.join([active_book.name for active_book in self.active_book.all()])
+#
+#     display_active_book.short_description = 'Активные книги'
+#
+#     class Meta:
+#         verbose_name = 'Читатель'
+#         verbose_name_plural = 'Читатели'
+#
