@@ -55,7 +55,7 @@ class Book(models.Model):
 class Reader(AbstractUser):
     first_name = models.CharField(verbose_name='Имя', max_length=255)
     last_name = models.CharField(verbose_name='Фамилия', max_length=255)
-    phone = models.BigIntegerField(verbose_name='номер телефона') #unique=True
+    phone = models.BigIntegerField(verbose_name='номер телефона', null=True) #unique=True
     status = models.BooleanField(default=True)
     active_book = models.ManyToManyField(Book, blank=True, verbose_name='активные книги')
     updated = models.DateTimeField(verbose_name='дата редактирования', auto_now_add=True)
