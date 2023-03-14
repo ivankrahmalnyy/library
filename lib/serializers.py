@@ -41,18 +41,45 @@ class ReaderSerializer(serializers.ModelSerializer):
     phone = serializers.IntegerField(validators=[PhoneValidator()])
     active_book = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
 
-    def create(self, validated_data):
-        reader = super().create(validated_data)
-
-        reader.set_password(reader.password)
-        reader.save()
-        return reader
-
+    # def validate_books(self, active_book):
+    #     if len(active_book) > 3:
+    #         raise serializers.ValidationError("Читатель не может иметь более 3 книг")
+    #     return active_book
+    #
+    # def validate(self, data):
+    #     books = data.get('quantity')
+    #     for book in books:
+    #         if book.quantity == 0:
+    #             raise serializers.ValidationError(f"Книга '{book.name}' недоступна для добавления в библиотеку")
+    #     return data
 
     def validate(self, attrs):
         if len(attrs['active_book']) > 3:
             raise serializers.ValidationError('Can\'t add more than 3 books')
         return attrs
+
+    # def create(self, validated_data):
+    #     reader = super().create(validated_data)
+    #
+    #     reader.set_password(reader.password)
+    #     reader.save()
+    #     return reader
+    #
+    def create(self, validated_data):
+        active_book = validated_data['active_book']
+        # reader = super().create(validated_data)
+        for book in active_book:
+            if book.quantity == 0:
+                raise serializers.ValidationError(f'Невозможно добавить книгу "{book.name}", нет в наличии!')
+            return super().create(validated_data)
+
+        #     book.quantity -= 1
+        #     book.save()
+        #     reader.active_book.add(book)
+        # reader.set_password(reader.password)
+        # reader.save()
+        # return reader
+
 
 
     def update(self, instance, validated_data):
@@ -75,4 +102,3 @@ class ReaderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reader
         fields = '__all__'
-
