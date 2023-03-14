@@ -13,10 +13,13 @@ class PermissionPolicyMixin:
 
         super().check_permissions(request)
 
-# class IsAdminOrOwner(BasePermission):
-#     message = 'нет доступа'
-#
-#     def has_permission(self, request, view):
-#         if request.user.id == int(view.queryset.get(pk=view.kwargs['pk'])):
-#             return True
-#         return False
+
+class PermissionReader(BasePermission):
+    message = 'Нет доступа: Вы не Администратор или не владелец данной учетной записи'
+
+    def has_permission(self, request, view):
+        if request.user.id == int(view.kwargs['pk']):
+            return True
+        elif request.user.is_staff:
+            return True
+        return False
