@@ -45,18 +45,19 @@ class ReaderSerializer(serializers.ModelSerializer):
     #     if len(active_book) > 3:
     #         raise serializers.ValidationError("Читатель не может иметь более 3 книг")
     #     return active_book
-    #
-    # def validate(self, data):
-    #     books = data.get('quantity')
-    #     for book in books:
-    #         if book.quantity == 0:
-    #             raise serializers.ValidationError(f"Книга '{book.name}' недоступна для добавления в библиотеку")
-    #     return data
 
     def validate(self, attrs):
         if len(attrs['active_book']) > 3:
             raise serializers.ValidationError('Can\'t add more than 3 books')
         return attrs
+    def validate(self, data):
+        books = data.get('active_book')
+        for book in books:
+            if book.quantity == 0:
+                raise serializers.ValidationError(f"Книга '{book.name}' недоступна для добавления в библиотеку")
+        return data
+
+
 
     # def create(self, validated_data):
     #     reader = super().create(validated_data)
@@ -65,13 +66,13 @@ class ReaderSerializer(serializers.ModelSerializer):
     #     reader.save()
     #     return reader
     #
-    def create(self, validated_data):
-        active_book = validated_data['active_book']
-        # reader = super().create(validated_data)
-        for book in active_book:
-            if book.quantity == 0:
-                raise serializers.ValidationError(f'Невозможно добавить книгу "{book.name}", нет в наличии!')
-            return super().create(validated_data)
+    # def create(self, validated_data):
+    #     active_book = validated_data['active_book']
+    #     # reader = super().create(validated_data)
+    #     for book in active_book:
+    #         if book.quantity == 0:
+    #             raise serializers.ValidationError(f'Невозможно добавить книгу "{book.name}", нет в наличии!')
+    #         return super().create(validated_data)
 
         #     book.quantity -= 1
         #     book.save()
@@ -80,7 +81,15 @@ class ReaderSerializer(serializers.ModelSerializer):
         # reader.save()
         # return reader
 
+    def create(self, validated_data):
+        if validated_data['active_book']:
+            # Уменьшаем количество экземпляров книги, если книга добавляется в актив читателя
+            for active_book in validated_data['active_book']:
 
+                active_book.quantity -= 1
+                active_book.save()
+
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
         if validated_data['active_book']:
